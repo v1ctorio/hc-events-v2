@@ -1,37 +1,31 @@
 {
-  "name": "@hackclub/events",
-  "version": "0.0.1",
-  "author": "Lachlan Campbell <lachlan@hackclub.com>",
-  "license": "MIT",
+  "name": "hc-events-v2",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
-    "format": "prettier --write ."
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@hackclub/meta": "^1.0.0",
-    "@hackclub/theme": "^0.3.0",
-    "@mdx-js/loader": "^3.1.1",
-    "@next/mdx": "16.0.10",
-    "date-fns": "^4.1.0",
-    "dotenv": "^17.2.3",
-    "github-slugger": "^2.0.0",
-    "lodash": "^4.17.21",
-    "marked": "^17.0.1",
-    "next": "16.1.5",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "react-feather": "^2.0.8",
-    "react-player": "^3.4.0",
-    "theme-ui": "^0.17.2",
-    "tinytime": "^0.2.6"
+    "@electric-sql/pglite": "^0.3.15",
+    "@iconify-json/lucide": "^1.2.87",
+    "@iconify-json/simple-icons": "^1.2.68",
+    "@nuxt/ui": "^4.4.0",
+    "@nuxthub/core": "^0.10.6",
+    "drizzle-kit": "^0.31.8",
+    "drizzle-orm": "^0.45.1",
+    "nuxt": "^4.3.0",
+    "postgres": "^3.4.8",
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
-    "baseline-browser-mapping": "^2.9.19",
-    "prettier": "^3.7.4"
+    "@nuxt/eslint": "^1.13.0",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.2.4"
   }
 }
