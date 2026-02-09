@@ -2,6 +2,12 @@
 export default defineNuxtConfig({
   modules: ['@nuxt/ui', '@nuxthub/core', "nuxt-auth-utils"],
 
+  nitro: {
+    experimental: {
+      tasks: true
+    }
+  },
+
   devtools: {
     enabled: true
   },
@@ -23,7 +29,7 @@ export default defineNuxtConfig({
       oidc: {
         openidConfig: "https://auth.hackclub.com/.well-known/openid-configuration",
         redirectURL: "http://localhost:3000/auth/hackclub",
-        scope: ["openid", "email"],
+        scope: ["openid", "email", "slack_id"],
         clientId: process.env.NUXT_OIDC_PROVIDERS_OIDC_CLIENT_ID,
         clientSecret: process.env.NEXT_OIDC_PROVIDERS_OIDC_CLIENT_SECRET
       }
