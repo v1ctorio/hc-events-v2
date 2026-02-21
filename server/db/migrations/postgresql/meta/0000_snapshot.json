@@ -1,5 +1,5 @@
 {
-  "id": "364d15b0-b9fc-4707-97a0-fc3a1c778891",
+  "id": "6d65d84d-2563-416a-9133-a8cad03cb12d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -69,7 +69,8 @@
           "name": "EventID",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "Title": {
           "name": "Title",
@@ -137,8 +138,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "slug": {
-          "name": "slug",
+        "Slug": {
+          "name": "Slug",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -149,7 +150,7 @@
           "name": "events_slug_unique",
           "columns": [
             {
-              "expression": "slug",
+              "expression": "Slug",
               "isExpression": false,
               "asc": true,
               "nulls": "last"

@@ -7,7 +7,7 @@ CREATE TABLE "amas" (
 );
 --> statement-breakpoint
 CREATE TABLE "events" (
-	"EventID" uuid PRIMARY KEY NOT NULL,
+	"EventID" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"Title" text NOT NULL,
 	"Description" text,
 	"ScheduledStartTime" timestamp with time zone NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE "events" (
 	"HasStarted" boolean DEFAULT false NOT NULL,
 	"HasFinished" boolean DEFAULT false NOT NULL,
 	"RSVPMessage" text,
-	"slug" text NOT NULL
+	"Slug" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "rsvps" (
@@ -33,4 +33,4 @@ CREATE TABLE "rsvps" (
 --> statement-breakpoint
 ALTER TABLE "amas" ADD CONSTRAINT "amas_event_id_events_EventID_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("EventID") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "rsvps" ADD CONSTRAINT "rsvps_event_id_events_EventID_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("EventID") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-CREATE UNIQUE INDEX "events_slug_unique" ON "events" USING btree ("slug");
+CREATE UNIQUE INDEX "events_slug_unique" ON "events" USING btree ("Slug");

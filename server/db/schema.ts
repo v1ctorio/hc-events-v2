@@ -2,7 +2,7 @@ import { relations } from 'drizzle-orm';
 import { boolean, pgTable, text, timestamp, uuid, primaryKey, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const events = pgTable('events', {
-    EventID: uuid().primaryKey(),
+    EventID: uuid().primaryKey().defaultRandom(),
     Title: text().notNull(),
     Description: text(),
     ScheduledStartTime: timestamp({withTimezone: true}).notNull(),
