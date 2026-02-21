@@ -17,6 +17,7 @@
     "@nuxthub/core": "^0.10.6",
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
+    "drizzle-zod": "^0.8.3",
     "nuxt": "^4.3.0",
     "nuxt-auth-utils": "^0.5.28",
     "postgres": "^3.4.8",
