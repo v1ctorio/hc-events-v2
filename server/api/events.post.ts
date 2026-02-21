@@ -28,7 +28,7 @@ export default defineEventHandler(async event =>{
         throw createError({ statusCode: 409, statusMessage:"slug conflict"})
     }
     //TODO: support ama creation. also update zod schema 
-    await db.insert(schema.events).values({
+    const [insertedEvent] = await db.insert(schema.events).values({
         Title: data.title,
         Description: data.description,
         ScheduledStartTime: scheduledStartTime,
@@ -36,6 +36,12 @@ export default defineEventHandler(async event =>{
         Approved: false,
         EventLink: data.eventLink,
         Slug: slug,
-    })
+    }).returning()
 
+    if (!insertedEvent) {
+        throw createError({statusCode:500, statusMessage: "error inserting the event"})
+    }
+    setResponseStatus(event, 201)
+    //TODO: return the APIEvent
+    return insertedEvent
 })

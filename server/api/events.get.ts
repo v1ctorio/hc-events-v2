@@ -46,6 +46,7 @@ export default defineEventHandler(async (event) => {
         .from(events)
         .where(where)
     )[0]?.count
+    //TODO: standardize the conversion from db event to APIEvent
     const response: { events: APIEvent[], pagination: { page: number, limit: number, total: number, totalPages: number } } = {
         events: rawEvReq.map(ev => ({
             ...ev,
