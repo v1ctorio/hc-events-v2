@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
         .from(events)
         .where(where)
     )[0]?.count
-    const response: { events: APIEvent[], totalCount: number } = {
+    const response: { events: APIEvent[], pagination: { page: number, limit: number, total: number, totalPages: number } } = {
         events: rawEvReq.map(ev => ({
             ...ev,
             leaderAvatar: `https://cachet.dunkirk.sh/users/${ev.LeaderSlackId}/r`,
@@ -55,7 +55,13 @@ export default defineEventHandler(async (event) => {
             googleCalendarLink: generateGoogleCalendarLink(ev),
             interestCount: undefined,
         })),
-        totalCount: totalCount || 0
+        pagination: {
+            page,
+            limit,
+            total: totalCount || 0,
+            totalPages: totalCount ? Math.ceil(totalCount / limit) : 0
+
+        }
     }
     return response
 })
