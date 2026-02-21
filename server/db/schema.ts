@@ -1,5 +1,5 @@
-import { sql, relations } from 'drizzle-orm';
-import { boolean, interval, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm';
+import { boolean, pgTable, text, timestamp, uuid, primaryKey, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const events = pgTable('events', {
     EventID: uuid().primaryKey(),
@@ -15,24 +15,29 @@ export const events = pgTable('events', {
     HasStarted: boolean().notNull().default(false),
     HasFinished: boolean().notNull().default(false),
 
-    RSVPMessage: text()
-})
+    RSVPMessage: text(),
+    Slug: text().notNull(),
+}, (table) => ([
+    uniqueIndex('events_slug_unique').on(table.Slug),
+]))
 
 
 export const rsvps = pgTable('rsvps', {
+    RSVPedSlackID: text().notNull(),
     EventID: uuid('event_id')
-        .primaryKey()
-        .references(() => events.EventID),
+        .references(() => events.EventID, { onDelete: 'cascade' }),
     SentOneDayReminder: boolean().notNull().default(false),
     SentThreeHoursReminder: boolean().notNull().default(false),
     SentStartingReminder: boolean().notNull().default(false),
-    RSVPedSlackID: text().array().notNull().default(sql`'{}'::text[]`),
-})
+    EmailNotificationEnabled: boolean().notNull().default(false),
+}, t => [
+    primaryKey({ columns: [t.EventID, t.RSVPedSlackID] }),
+])
 
 export const amas = pgTable('amas', {
     EventID: uuid('event_id')
         .primaryKey()
-        .references(() => events.EventID),
+        .references(() => events.EventID, { onDelete: 'cascade' }),
     AMAName: text().notNull(),
     AMACompany: text(),
     AMATitle: text().notNull(),
@@ -40,15 +45,9 @@ export const amas = pgTable('amas', {
     AMAAvatar: text()
 })
 
-export const eventsRelations = relations(events, ({ one }) => ({
-    rsvp: one(rsvps, {
-        fields: [events.EventID],
-        references: [rsvps.EventID],
-    }),
-    ama: one(amas, {
-        fields: [events.EventID],
-        references: [amas.EventID],
-    }),
+export const eventsRelations = relations(events, ({ one, many }) => ({
+    rsvps: many(rsvps),
+    ama: one(amas),
 }));
 
 export const rsvpsRelations = relations(rsvps, ({ one }) => ({

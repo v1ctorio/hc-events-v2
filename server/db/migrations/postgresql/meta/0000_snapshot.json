@@ -1,5 +1,5 @@
 {
-  "id": "0ea1d9fe-45c8-474d-bb9b-921747ad5fb1",
+  "id": "364d15b0-b9fc-4707-97a0-fc3a1c778891",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -51,7 +51,7 @@
           "columnsTo": [
             "EventID"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -136,9 +136,31 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "events_slug_unique": {
+          "name": "events_slug_unique",
+          "columns": [
+            {
+              "expression": "slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -150,11 +172,17 @@
       "name": "rsvps",
       "schema": "",
       "columns": {
+        "RSVPedSlackID": {
+          "name": "RSVPedSlackID",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "event_id": {
           "name": "event_id",
           "type": "uuid",
-          "primaryKey": true,
-          "notNull": true
+          "primaryKey": false,
+          "notNull": false
         },
         "SentOneDayReminder": {
           "name": "SentOneDayReminder",
@@ -177,12 +205,12 @@
           "notNull": true,
           "default": false
         },
-        "RSVPedSlackID": {
-          "name": "RSVPedSlackID",
-          "type": "text[]",
+        "EmailNotificationEnabled": {
+          "name": "EmailNotificationEnabled",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": "'{}'::text[]"
+          "default": false
         }
       },
       "indexes": {},
@@ -197,11 +225,19 @@
           "columnsTo": [
             "EventID"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "rsvps_event_id_RSVPedSlackID_pk": {
+          "name": "rsvps_event_id_RSVPedSlackID_pk",
+          "columns": [
+            "event_id",
+            "RSVPedSlackID"
+          ]
+        }
+      },
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},

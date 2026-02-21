@@ -17,16 +17,20 @@ CREATE TABLE "events" (
 	"Cancelled" boolean DEFAULT false NOT NULL,
 	"HasStarted" boolean DEFAULT false NOT NULL,
 	"HasFinished" boolean DEFAULT false NOT NULL,
-	"RSVPMessage" text
+	"RSVPMessage" text,
+	"slug" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "rsvps" (
-	"event_id" uuid PRIMARY KEY NOT NULL,
+	"RSVPedSlackID" text NOT NULL,
+	"event_id" uuid,
 	"SentOneDayReminder" boolean DEFAULT false NOT NULL,
 	"SentThreeHoursReminder" boolean DEFAULT false NOT NULL,
 	"SentStartingReminder" boolean DEFAULT false NOT NULL,
-	"RSVPedSlackID" text[] DEFAULT '{}'::text[] NOT NULL
+	"EmailNotificationEnabled" boolean DEFAULT false NOT NULL,
+	CONSTRAINT "rsvps_event_id_RSVPedSlackID_pk" PRIMARY KEY("event_id","RSVPedSlackID")
 );
 --> statement-breakpoint
-ALTER TABLE "amas" ADD CONSTRAINT "amas_event_id_events_EventID_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("EventID") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "rsvps" ADD CONSTRAINT "rsvps_event_id_events_EventID_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("EventID") ON DELETE no action ON UPDATE no action;
+ALTER TABLE "amas" ADD CONSTRAINT "amas_event_id_events_EventID_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("EventID") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "rsvps" ADD CONSTRAINT "rsvps_event_id_events_EventID_fk" FOREIGN KEY ("event_id") REFERENCES "public"."events"("EventID") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+CREATE UNIQUE INDEX "events_slug_unique" ON "events" USING btree ("slug");
