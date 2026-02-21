@@ -1,10 +1,8 @@
 import { db, schema } from "@nuxthub/db" 
-import type { NewEvent } from "#shared/types/events"
 import { NewEventFormSchema } from "#shared/zod"
 import { useSlackUser } from "../utils";
 import { eq } from "drizzle-orm";
 import { events } from "hub:db:schema";
-import { randomUUID } from "node:crypto";
 export default defineEventHandler(async event =>{
     const {data} = await readValidatedBody(event, NewEventFormSchema.safeParse)
 
@@ -38,7 +36,6 @@ export default defineEventHandler(async event =>{
         Approved: false,
         EventLink: data.eventLink,
         Slug: slug,
-        EventID: randomUUID()
     })
 
 })
