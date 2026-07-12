@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 useHead({
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
@@ -11,47 +11,60 @@ useHead({
   }
 })
 
-const title = 'Nuxt Starter Template'
-const description = 'A production-ready starter template powered by Nuxt UI. Build beautiful, accessible, and performant applications in minutes, not hours.'
+const title = 'Hack Club Events'
+const description = 'AMAs, show & tells, & weekly fun in the Hack Club community.'
 
 useSeoMeta({
   title,
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: 'https://ui.nuxt.com/assets/templates/nuxt/starter-light.png',
-  twitterImage: 'https://ui.nuxt.com/assets/templates/nuxt/starter-light.png',
   twitterCard: 'summary_large_image'
 })
 </script>
 
 <template>
   <UApp>
-    <Header/>
+    <Header />
 
     <UMain>
       <NuxtPage />
     </UMain>
 
-    <USeparator icon="i-simple-icons-nuxtdotjs" />
-
-    <UFooter>
-      <template #left>
-        <p class="text-sm text-muted">
-          Built with Nuxt UI • © {{ new Date().getFullYear() }}
+    <footer class="site-footer">
+      <div class="container footer-container">
+        <p class="footer-text">
+          Built with ❤️ by <a href="https://hackclub.com">Hack Club</a>
         </p>
-      </template>
-
-      <template #right>
-        <UButton
-          to="https://github.com/nuxt-ui-templates/starter"
-          target="_blank"
-          icon="i-simple-icons-github"
-          aria-label="GitHub"
-          color="neutral"
-          variant="ghost"
-        />
-      </template>
-    </UFooter>
+        <div class="footer-links">
+          <UButton
+            to="https://github.com/hackclub/hc-events-v2"
+            target="_blank"
+            icon="i-simple-icons-github"
+            aria-label="GitHub"
+            color="neutral"
+            variant="ghost"
+            size="sm"
+          />
+        </div>
+      </div>
+    </footer>
   </UApp>
 </template>
+
+<style scoped>
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: var(--spacing-4) 0;
+}
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-text {
+  font-size: var(--font-1);
+  color: var(--muted);
+  margin: 0;
+}
+</style>
