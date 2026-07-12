@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@nuxthub/core', "nuxt-auth-utils"],
+  modules: ["@nuxt/ui", '@nuxthub/core', "nuxt-auth-utils"],
+
 
   nitro: {
     experimental: {
@@ -12,7 +13,7 @@ export default defineNuxtConfig({
     enabled: true
   },
 
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.css', '~/assets/css/fonts.css'],
 
   routeRules: {
     '/': { prerender: true }
