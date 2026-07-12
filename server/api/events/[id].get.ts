@@ -15,14 +15,23 @@ export default defineEventHandler(async (event): Promise<APIEvent> => {
         });
     }
 
-    const ev = await db.query.events.findFirst({
-        where: and(
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+    const whereClause = isUUID
+        ? and(
             or(
                 eq(events.EventID, id),
                 eq(events.Slug, id)
             ),
             eq(events.Approved, true)
-        ),
+        )
+        : and(
+            eq(events.Slug, id),
+            eq(events.Approved, true)
+        );
+
+    const ev = await db.query.events.findFirst({
+        where: whereClause,
         with: {
             ama: true
         }
