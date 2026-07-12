@@ -8,7 +8,10 @@ useHead({
   ],
   htmlAttrs: {
     lang: 'en'
-  }
+  },
+  style: [
+    { children: 'body{opacity:0}', tagPosition: 'head' }
+  ]
 })
 
 const title = 'Hack Club Events'

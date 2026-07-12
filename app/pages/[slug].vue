@@ -12,6 +12,9 @@ if (!event.value && status.value !== 'pending') {
 
 const { loggedIn, user } = useUserSession()
 
+const leaderSlackId = computed(() => event.value?.LeaderSlackId ?? null)
+const { displayName: leaderName, avatarUrl: leaderAvatar } = useCachetUser(leaderSlackId.value)
+
 const startDate = computed(() => event.value ? new Date(event.value.ScheduledStartTime) : new Date())
 const endDate = computed(() => {
   if (!event.value) return new Date()
@@ -61,8 +64,8 @@ useSeoMeta({
         <h1 class="title">{{ event.Title }}</h1>
         <div class="event-host">
           <span>{{ event.isAma ? 'An AMA hosted by' : 'An event by' }}</span>
-          <img :src="event.leaderAvatar" :alt="event.LeaderSlackId" class="host-avatar" />
-          <span>{{ event.LeaderSlackId }}</span>
+          <img :src="leaderAvatar" :alt="leaderName" class="host-avatar" />
+          <span>{{ leaderName }}</span>
         </div>
       </div>
     </header>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const props = defineProps<{ event: Record<string, any> }>()
 
+const { displayName, avatarUrl } = useCachetUser(props.event.LeaderSlackId)
+
 const startTime = computed(() => new Date(props.event.ScheduledStartTime))
 const endTime = computed(() => {
   const dur = props.event.EstimatedDuration ?? 60
@@ -33,12 +35,12 @@ const fmtTime = (d: Date) => d.toLocaleTimeString(undefined, { hour: 'numeric', 
       </div>
       <div class="event-meta">
         <img
-          v-if="event.leaderAvatar"
-          :src="event.leaderAvatar"
-          :alt="event.LeaderSlackId"
+          v-if="avatarUrl"
+          :src="avatarUrl"
+          :alt="displayName"
           class="leader-avatar"
         />
-        <span class="leader-name">{{ event.LeaderSlackId }}</span>
+        <span class="leader-name">{{ displayName }}</span>
         <span v-if="event.isAma" class="ama-badge">AMA</span>
       </div>
     </div>

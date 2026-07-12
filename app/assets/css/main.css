@@ -605,3 +605,9 @@
     }
   }
 }
+
+/* Reveal body once this stylesheet is parsed (prevents FOUC) */
+body {
+  opacity: 1 !important;
+  transition: opacity 0.15s ease-in;
+}
