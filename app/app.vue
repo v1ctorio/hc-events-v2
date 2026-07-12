@@ -37,15 +37,14 @@ useSeoMeta({
           Built with ❤️ by <a href="https://hackclub.com">Hack Club</a>
         </p>
         <div class="footer-links">
-          <UButton
-            to="https://github.com/hackclub/hc-events-v2"
+          <a
+            href="https://github.com/hackclub/hc-events-v2"
             target="_blank"
-            icon="i-simple-icons-github"
             aria-label="GitHub"
-            color="neutral"
-            variant="ghost"
-            size="sm"
-          />
+            class="icon-link"
+          >
+            <UIcon name="i-simple-icons-github" />
+          </a>
         </div>
       </div>
     </footer>
@@ -66,5 +65,15 @@ useSeoMeta({
   font-size: var(--font-1);
   color: var(--muted);
   margin: 0;
+}
+.icon-link {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  color: var(--muted);
+  transition: opacity 0.125s ease-in-out;
+}
+.icon-link:hover {
+  opacity: 0.8;
 }
 </style>
