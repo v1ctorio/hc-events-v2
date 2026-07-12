@@ -1,12 +1,12 @@
 import { relations } from 'drizzle-orm';
-import { boolean, pgTable, text, timestamp, uuid, primaryKey, uniqueIndex } from 'drizzle-orm/pg-core'
+import { boolean, integer, pgTable, text, timestamp, uuid, primaryKey, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const events = pgTable('events', {
     EventID: uuid().primaryKey().defaultRandom(),
     Title: text().notNull(),
     Description: text(),
     ScheduledStartTime: timestamp({withTimezone: true}).notNull(),
-    //TODO: add estimated duration column and infer ScheduledEndTime EstimatedDuration: interval({})
+    EstimatedDuration: integer(), // minutes; ScheduledEndTime = ScheduledStartTime + EstimatedDuration (inferred at API layer)
     LeaderSlackId: text().notNull().default("U040N4ESCEL"),
     
     Approved: boolean().notNull().default(false),
@@ -16,6 +16,8 @@ export const events = pgTable('events', {
     HasFinished: boolean().notNull().default(false),
 
     RSVPMessage: text(),
+    YouTubeURL: text(),
+    Tags: text().array().notNull().default([]),
     Slug: text().notNull(),
 }, (table) => ([
     uniqueIndex('events_slug_unique').on(table.Slug),
