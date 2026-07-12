@@ -1,6 +1,6 @@
 import { db, schema } from "@nuxthub/db"
 import { NewEventFormSchema } from "#shared/zod"
-import { useSlackUser, toAPIEvent } from "../utils";
+import { requireIdentity, toAPIEvent } from "../utils";
 import { eq } from "drizzle-orm";
 
 export default defineEventHandler(async event => {
@@ -10,7 +10,7 @@ export default defineEventHandler(async event => {
         throw createError({ statusCode: 400, statusMessage: "invalid body" })
     }
 
-    const user = await useSlackUser(event)
+    const user = await requireIdentity(event)
     const scheduledStartTime = new Date(data.scheduledStartTime)
 
     const slug = [

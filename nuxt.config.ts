@@ -26,6 +26,10 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    // API key for programmatic access (Authorization: Bearer <HC_API_SECRET>)
+    hcApiSecret: '',  // set via HC_API_SECRET env var
+    // Comma-separated Slack IDs with admin privileges
+    hcAdminSlackIds: '', // set via HC_ADMIN_SLACK_IDS env var
     oauth: {
       oidc: {
         openidConfig: "https://auth.hackclub.com/.well-known/openid-configuration",

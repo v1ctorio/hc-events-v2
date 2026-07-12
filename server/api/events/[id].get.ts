@@ -1,6 +1,7 @@
 import { db, schema } from '@nuxthub/db';
 import { and, count, eq, or } from 'drizzle-orm';
 import { toAPIEvent } from '~~/server/utils';
+import type { APIEvent } from '~~/shared/types/events';
 const { events } = schema;
 
 

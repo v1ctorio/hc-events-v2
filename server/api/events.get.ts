@@ -7,7 +7,7 @@ const { events } = schema;
 export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     const page = Math.max(1, Number(query.page || 1))
-    const limit = Math.min(200, Number(query.limit || 30))
+    const limit = Math.max(1, Math.min(200, Number(query.limit || 30)))
 
     const queryConditions = [
         eq(events.Approved, true),
