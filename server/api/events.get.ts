@@ -1,67 +1,62 @@
 import { db, schema } from '@nuxthub/db';
-import { and, count, desc, eq, gte, lt, sql } from 'drizzle-orm';
-import { APIEvent } from '~~/shared/types/events';
-import { generateGoogleCalendarLink } from '../utils';
+import { and, arrayOverlaps, count, desc, eq, gte, lt } from 'drizzle-orm';
+import { toAPIEvent } from '../utils';
+import type { APIEvent } from '~~/shared/types/events';
 const { events } = schema;
+
 export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     const page = Math.max(1, Number(query.page || 1))
     const limit = Math.min(200, Number(query.limit || 30))
-    const offset = (page - 1) * limit
 
     const queryConditions = [
         eq(events.Approved, true),
         eq(events.Cancelled, false)
     ]
 
+    if (query.tags) {
+        const tags = String(query.tags).split(',').map(t => t.trim()).filter(Boolean)
+        if (tags.length) queryConditions.push(arrayOverlaps(events.Tags, tags))
+    }
+
     if (query.year) {
         const year = Number(query.year)
         const month = query.month ? Number(query.month) : null
 
         if (month) {
-            const start = new Date(year, month -1, 1)
+            const start = new Date(year, month - 1, 1)
             const end = new Date(year, month, 1)
             queryConditions.push(gte(events.ScheduledStartTime, start))
             queryConditions.push(lt(events.ScheduledStartTime, end))
         } else {
             const start = new Date(year, 0, 1)
-            const end = new Date(year + 1,0,1)
+            const end = new Date(year + 1, 0, 1)
             queryConditions.push(gte(events.ScheduledStartTime, start))
             queryConditions.push(lt(events.ScheduledStartTime, end))
         }
     }
 
     const where = and(...queryConditions)
-    const rawEvReq = await db.query.events.findMany({
-        where,
-        with: {
-            ama: true
-        },
-        orderBy: [desc(events.ScheduledStartTime)],
-        limit: limit,
-        offset: (page -1) * limit
-    })
+    const [rawEvents, totalCountRow] = await Promise.all([
+        db.query.events.findMany({
+            where,
+            with: { ama: true },
+            orderBy: [desc(events.ScheduledStartTime)],
+            limit,
+            offset: (page - 1) * limit,
+        }),
+        db.select({ count: count() }).from(events).where(where)
+    ])
 
-    const totalCount =(await db.select({ count: count() })
-        .from(events)
-        .where(where)
-    )[0]?.count
-    //TODO: standardize the conversion from db event to APIEvent
+    const totalCount = totalCountRow[0]?.count ?? 0
     const response: { events: APIEvent[], pagination: { page: number, limit: number, total: number, totalPages: number } } = {
-        events: rawEvReq.map(ev => ({
-            ...ev,
-            leaderAvatar: `https://cachet.dunkirk.sh/users/${ev.LeaderSlackId}/r`,
-            isAma: !!ev.ama,
-            ama_info: ev.ama || undefined,
-            googleCalendarLink: generateGoogleCalendarLink(ev),
-            interestCount: undefined,
-        })),
+        // ponytail: interestCount omitted on list for perf (would require N extra queries); fetch per-event on detail page
+        events: rawEvents.map(ev => toAPIEvent(ev, ev.ama, undefined)),
         pagination: {
             page,
             limit,
-            total: totalCount || 0,
-            totalPages: totalCount ? Math.ceil(totalCount / limit) : 0
-
+            total: totalCount,
+            totalPages: Math.ceil(totalCount / limit)
         }
     }
     return response
