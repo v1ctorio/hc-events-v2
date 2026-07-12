@@ -1,0 +1,278 @@
+{
+  "id": "ecdb5730-9e9f-4891-bf6b-f34819202edc",
+  "prevId": "6d65d84d-2563-416a-9133-a8cad03cb12d",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.amas": {
+      "name": "amas",
+      "schema": "",
+      "columns": {
+        "event_id": {
+          "name": "event_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "AMAName": {
+          "name": "AMAName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "AMACompany": {
+          "name": "AMACompany",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "AMATitle": {
+          "name": "AMATitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "AMAAvatar": {
+          "name": "AMAAvatar",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "amas_event_id_events_EventID_fk": {
+          "name": "amas_event_id_events_EventID_fk",
+          "tableFrom": "amas",
+          "tableTo": "events",
+          "columnsFrom": [
+            "event_id"
+          ],
+          "columnsTo": [
+            "EventID"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.events": {
+      "name": "events",
+      "schema": "",
+      "columns": {
+        "EventID": {
+          "name": "EventID",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "Title": {
+          "name": "Title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Description": {
+          "name": "Description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ScheduledStartTime": {
+          "name": "ScheduledStartTime",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "EstimatedDuration": {
+          "name": "EstimatedDuration",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "LeaderSlackId": {
+          "name": "LeaderSlackId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'U040N4ESCEL'"
+        },
+        "Approved": {
+          "name": "Approved",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "EventLink": {
+          "name": "EventLink",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'https://app.slack.com/huddle/T0266FRGM/C01D7AHKMPF'"
+        },
+        "Cancelled": {
+          "name": "Cancelled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "HasStarted": {
+          "name": "HasStarted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "HasFinished": {
+          "name": "HasFinished",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "RSVPMessage": {
+          "name": "RSVPMessage",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "YouTubeURL": {
+          "name": "YouTubeURL",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Tags": {
+          "name": "Tags",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'"
+        },
+        "Slug": {
+          "name": "Slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "events_slug_unique": {
+          "name": "events_slug_unique",
+          "columns": [
+            {
+              "expression": "Slug",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.rsvps": {
+      "name": "rsvps",
+      "schema": "",
+      "columns": {
+        "RSVPedSlackID": {
+          "name": "RSVPedSlackID",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event_id": {
+          "name": "event_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "SentOneDayReminder": {
+          "name": "SentOneDayReminder",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "SentThreeHoursReminder": {
+          "name": "SentThreeHoursReminder",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "SentStartingReminder": {
+          "name": "SentStartingReminder",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "EmailNotificationEnabled": {
+          "name": "EmailNotificationEnabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "rsvps_event_id_events_EventID_fk": {
+          "name": "rsvps_event_id_events_EventID_fk",
+          "tableFrom": "rsvps",
+          "tableTo": "events",
+          "columnsFrom": [
+            "event_id"
+          ],
+          "columnsTo": [
+            "EventID"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "rsvps_event_id_RSVPedSlackID_pk": {
+          "name": "rsvps_event_id_RSVPedSlackID_pk",
+          "columns": [
+            "event_id",
+            "RSVPedSlackID"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
