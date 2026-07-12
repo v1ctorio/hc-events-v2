@@ -6,7 +6,7 @@ const page = computed(() => Number(route.query.page || 1))
 const tags = computed(() => route.query.tags ? String(route.query.tags) : undefined)
 
 const { data, status } = await useFetch('/api/events', {
-  query: { page, tags, limit: 30 },
+  query: { page, tags, limit: 30, upcoming: true },
   watch: [page, tags],
 })
 

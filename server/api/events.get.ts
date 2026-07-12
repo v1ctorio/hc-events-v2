@@ -1,5 +1,5 @@
 import { db, schema } from '@nuxthub/db';
-import { and, arrayOverlaps, count, desc, eq, gte, lt } from 'drizzle-orm';
+import { and, arrayOverlaps, asc, count, desc, eq, gte, lt } from 'drizzle-orm';
 import { toAPIEvent } from '../utils';
 import type { APIEvent } from '~~/shared/types/events';
 const { events } = schema;
@@ -36,12 +36,19 @@ export default defineEventHandler(async (event) => {
         }
     }
 
+    // upcoming=true → only events from the start of the current month onwards
+    if (query.upcoming === 'true' || query.upcoming === '1') {
+        const now = new Date()
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+        queryConditions.push(gte(events.ScheduledStartTime, monthStart))
+    }
+
     const where = and(...queryConditions)
     const [rawEvents, totalCountRow] = await Promise.all([
         db.query.events.findMany({
             where,
             with: { ama: true },
-            orderBy: [desc(events.ScheduledStartTime)],
+            orderBy: [asc(events.ScheduledStartTime)],
             limit,
             offset: (page - 1) * limit,
         }),

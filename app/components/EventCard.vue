@@ -1,12 +1,16 @@
 <script setup lang="ts">
 const props = defineProps<{ event: Record<string, any> }>()
 
-const isPast = computed(() => new Date(props.event.ScheduledStartTime) < new Date())
-
+const startTime = computed(() => new Date(props.event.ScheduledStartTime))
 const endTime = computed(() => {
-  const start = new Date(props.event.ScheduledStartTime)
   const dur = props.event.EstimatedDuration ?? 60
-  return new Date(start.getTime() + dur * 60_000)
+  return new Date(startTime.value.getTime() + dur * 60_000)
+})
+
+const isPast = computed(() => endTime.value < new Date())
+const isLive = computed(() => {
+  const now = new Date()
+  return startTime.value <= now && now < endTime.value
 })
 
 const fmtDate = (d: Date) => d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
@@ -14,10 +18,13 @@ const fmtTime = (d: Date) => d.toLocaleTimeString(undefined, { hour: 'numeric', 
 </script>
 
 <template>
-  <NuxtLink :to="`/${event.Slug}`" class="event-card" :class="{ past: isPast }">
-    <div class="event-date-bar" :class="{ past: isPast }">
-      <strong>{{ fmtDate(new Date(event.ScheduledStartTime)) }}</strong>
-      {{ fmtTime(new Date(event.ScheduledStartTime)) }}–{{ fmtTime(endTime) }}
+  <NuxtLink :to="`/${event.Slug}`" class="event-card" :class="{ past: isPast, live: isLive }">
+    <div class="event-date-bar" :class="{ past: isPast, live: isLive }">
+      <span v-if="isLive" class="live-badge">● LIVE</span>
+      <template v-else>
+        <strong>{{ fmtDate(startTime) }}</strong>
+      </template>
+      {{ fmtTime(startTime) }}–{{ fmtTime(endTime) }}
     </div>
     <div class="event-body">
       <h3 class="event-title">{{ event.Title }}</h3>
@@ -44,15 +51,18 @@ const fmtTime = (d: Date) => d.toLocaleTimeString(undefined, { hour: 'numeric', 
   text-decoration: none;
   color: var(--text);
   background: var(--elevated);
-  border-radius: var(--radii-extra);
-  box-shadow: var(--shadow-card);
+  border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.125s ease-in-out, box-shadow 0.125s ease-in-out;
 }
 .event-card:hover {
-  transform: scale(1.02);
-  box-shadow: var(--shadow-elevated);
+  outline: 2px solid var(--primary);
 }
+
+/* Live event glow */
+.event-card.live {
+  outline: 2px solid var(--green);
+}
+
 .event-date-bar {
   background: var(--primary);
   color: var(--white);
@@ -64,12 +74,26 @@ const fmtTime = (d: Date) => d.toLocaleTimeString(undefined, { hour: 'numeric', 
   background: var(--sunken);
   color: var(--text);
 }
+.event-date-bar.live {
+  background: var(--green);
+}
 .event-date-bar strong {
   display: block;
 }
 @media (min-width: 32em) {
   .event-date-bar strong { display: inline; margin-right: var(--spacing-2); }
 }
+
+.live-badge {
+  font-weight: bold;
+  margin-right: var(--spacing-2);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 .event-body {
   padding: var(--spacing-3);
 }
@@ -92,7 +116,7 @@ const fmtTime = (d: Date) => d.toLocaleTimeString(undefined, { hour: 'numeric', 
   background: var(--sunken);
   color: var(--muted);
   padding: 2px var(--spacing-2);
-  border-radius: var(--radii-default);
+  border-radius: 4px;
 }
 .event-meta {
   display: flex;
@@ -112,6 +136,6 @@ const fmtTime = (d: Date) => d.toLocaleTimeString(undefined, { hour: 'numeric', 
   font-size: var(--font-1);
   font-weight: bold;
   padding: 2px var(--spacing-2);
-  border-radius: var(--radii-circle);
+  border-radius: 4px;
 }
 </style>
