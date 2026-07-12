@@ -48,7 +48,7 @@ export default defineEventHandler(async (event) => {
         db.query.events.findMany({
             where,
             with: { ama: true },
-            orderBy: [asc(events.ScheduledStartTime)],
+            orderBy: [desc(events.ScheduledStartTime)],
             limit,
             offset: (page - 1) * limit,
         }),
