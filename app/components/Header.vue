@@ -29,6 +29,7 @@ const { loggedIn, user, clear } = useUserSession()
           color="neutral"
           size="sm"
           @click="clear"
+          style="box-shadow: none; transform: none; border-radius: var(--radii-default);"
         >
           Sign Out
         </UButton>
@@ -38,11 +39,12 @@ const { loggedIn, user, clear } = useUserSession()
           class="nav-avatar"
         />
       </template>
-      <a href="/auth/hackclub">
+      <a href="/auth/hackclub" v-else>
         <UButton
           variant="ghost"
           color="neutral"
           size="sm"
+          style="box-shadow: none; transform: none; border-radius: var(--radii-default);"
         >
           Log in
         </UButton>
