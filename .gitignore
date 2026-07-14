@@ -25,3 +25,5 @@ logs
 
 .github
 .vscode
+OBJECTIVE.md
+thirdpary/*
