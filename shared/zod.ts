@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { EVENT_TAGS } from './event-tags'
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
 export const slugSchema = z
@@ -14,5 +15,5 @@ export const NewEventFormSchema = z.object({
   leaderSlackId: z.string().min(1),
   eventLink: z.url().optional().default("https://app.slack.com/huddle/T0266FRGM/C01D7AHKMPF"),
   estimatedDuration: z.number().int().positive().optional(), // minutes
-  tags: z.array(z.string()).optional().default([]),
+  tags: z.array(z.enum(EVENT_TAGS)).optional().default([]),
 })

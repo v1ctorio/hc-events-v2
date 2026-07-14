@@ -10,7 +10,7 @@ useHead({
     lang: 'en'
   },
   style: [
-    { children: 'body{opacity:0}', tagPosition: 'head' }
+    { innerHTML: 'body{opacity:0}', tagPosition: 'head' }
   ]
 })
 

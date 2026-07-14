@@ -81,6 +81,17 @@ const navigateToPage = (p: number) => {
       <div v-else class="empty">
         <h2>🚧 More events coming soon.</h2>
       </div>
+
+      <div class="history-link">
+        <UButton
+          to="/past"
+          variant="outline"
+          color="neutral"
+          icon="i-lucide-history"
+        >
+          View past events
+        </UButton>
+      </div>
     </main>
   </div>
 </template>
@@ -122,6 +133,11 @@ const navigateToPage = (p: number) => {
   text-align: center;
   padding: var(--spacing-5) 0;
   color: var(--muted);
+}
+.history-link {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-4);
 }
 .spinner {
   animation: spin 1s linear infinite;
