@@ -17,3 +17,7 @@ export const NewEventFormSchema = z.object({
   estimatedDuration: z.number().int().positive().optional(), // minutes
   tags: z.array(z.enum(EVENT_TAGS)).optional().default([]),
 })
+
+export const AdminEventActionSchema = z.object({
+  action: z.enum(['approve', 'reject', 'cancel', 'restore']),
+})

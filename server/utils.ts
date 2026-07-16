@@ -14,6 +14,14 @@ export function isAdmin(slackId: string): boolean {
     return getConfig().adminIds.has(slackId)
 }
 
+export async function requireAdmin(event: H3Event<EventHandlerRequest>) {
+    const caller = await requireIdentity(event)
+    if (!caller.isApiKey && !isAdmin(caller.slack_id)) {
+        throw createError({ statusCode: 403, statusMessage: 'Admin access required' })
+    }
+    return caller
+}
+
 /**
  * Resolves the caller's identity from either:
  *   1. Authorization: Bearer <HC_API_SECRET>  → treated as a super-admin API caller

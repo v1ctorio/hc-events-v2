@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { loggedIn, user, clear } = useUserSession()
+const { data: adminStatus } = await useFetch('/api/admin/status')
 </script>
 
 <template>
@@ -15,13 +16,23 @@ const { loggedIn, user, clear } = useUserSession()
 
     <div class="nav-right">
       <UButton
+        v-if="adminStatus?.isAdmin"
+        to="/admin"
+        variant="ghost"
+        color="neutral"
+        size="sm"
+        class="admin-link"
+      >
+        Admin
+      </UButton>
+      <UButton
         v-if="loggedIn"
         to="/new"
         size="sm"
         icon="i-lucide-plus"
         class="create-event"
       >
-        Create event
+        Submit event
       </UButton>
       <a
         href="https://github.com/hackclub/hc-events-v2"
@@ -92,7 +103,8 @@ nav {
   height: 28px;
   border-radius: 50%;
 }
-.create-event {
+.create-event,
+.admin-link {
   border-radius: var(--radii-default);
   box-shadow: none;
 }
