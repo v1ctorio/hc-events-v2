@@ -163,14 +163,18 @@ useSeoMeta({
           <fieldset class="field field-wide tag-field">
             <legend>Tags</legend>
             <div class="tag-options">
-              <label v-for="tag in EVENT_TAGS" :key="tag" :class="{ selected: tags.includes(tag) }">
-                <input
-                  type="checkbox"
-                  :checked="tags.includes(tag)"
-                  @change="toggleTag(tag)"
-                />
+              <button
+                v-for="tag in EVENT_TAGS"
+                :key="tag"
+                type="button"
+                class="tag-pill"
+                :class="{ selected: tags.includes(tag) }"
+                :aria-pressed="tags.includes(tag)"
+                @click="toggleTag(tag)"
+              >
+                <UIcon v-if="tags.includes(tag)" name="i-lucide-check" />
                 {{ tag.replaceAll('-', ' ').replace(/\b\w/g, letter => letter.toUpperCase()) }}
-              </label>
+              </button>
             </div>
           </fieldset>
         </div>
@@ -327,24 +331,36 @@ useSeoMeta({
   flex-wrap: wrap;
   gap: var(--spacing-2);
 }
-.tag-options label {
+.tag-pill {
   display: flex;
   align-items: center;
   gap: var(--spacing-2);
   padding: var(--spacing-2) var(--spacing-3);
   border: 1px solid var(--border);
-  border-radius: var(--radii-small);
+  border-radius: var(--radii-circle);
+  background: var(--background);
   color: var(--muted);
+  font-size: var(--font-2);
+  box-shadow: none;
   cursor: pointer;
+  transform: none;
 }
-.tag-options label.selected {
+.tag-pill:hover,
+.tag-pill:focus-visible {
   border-color: var(--primary);
-  background: color-mix(in srgb, var(--primary) 7%, var(--background));
+  box-shadow: none;
   color: var(--text);
+  outline: none;
+  transform: none;
 }
-.tag-options input {
-  width: auto;
-  accent-color: var(--primary);
+.tag-pill:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.tag-pill.selected {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--white);
 }
 .form-footer {
   display: flex;
