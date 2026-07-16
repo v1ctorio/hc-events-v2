@@ -46,7 +46,6 @@ useSeoMeta({
   <main class="container admin-page">
     <header class="page-header">
       <div>
-        <p class="eyebrow">Admin</p>
         <h1>Manage events</h1>
       </div>
       <p v-if="!error" class="caption">{{ pendingCount }} pending</p>
@@ -77,7 +76,7 @@ useSeoMeta({
             </span>
           </div>
           <p>{{ formatDate(event.ScheduledStartTime) }}</p>
-          <p>Host: {{ event.LeaderSlackId }}</p>
+          <p>Host: <MemberName :slack-id="event.LeaderSlackId" /></p>
           <div v-if="event.Tags.length" class="event-tags">
             <span v-for="tag in event.Tags" :key="tag">{{ tag }}</span>
           </div>
@@ -160,9 +159,6 @@ useSeoMeta({
 }
 .page-header h1 {
   margin: 0;
-}
-.page-header .eyebrow {
-  color: var(--primary);
 }
 .event-list {
   border-top: 1px solid var(--border);

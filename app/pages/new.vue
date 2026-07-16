@@ -79,27 +79,23 @@ useSeoMeta({
   <div>
     <header class="form-hero">
       <div class="container hero-inner">
-        <p class="eyebrow">Host something great</p>
         <h1 class="title">Create an event</h1>
-        <p class="subtitle">Share a workshop, AMA, or social event with the Hack Club community.</p>
+        <p class="subtitle">Submit an event for the Hack Club community.</p>
       </div>
     </header>
 
     <main class="container form-container">
       <section v-if="!loggedIn" class="login-gate">
-        <UIcon name="i-lucide-calendar-plus" class="gate-icon" />
-        <h2>Log in to propose an event</h2>
+        <h2>Log in to submit an event</h2>
         <p>Event proposals are connected to your Hack Club Slack account.</p>
-        <UButton to="/auth/hackclub" icon="i-lucide-log-in">Log in with Hack Club</UButton>
+        <UButton to="/auth/hackclub">Log in with Hack Club</UButton>
       </section>
 
       <section v-else-if="submittedTitle" class="success-state" aria-live="polite">
-        <div class="success-icon"><UIcon name="i-lucide-check" /></div>
-        <p class="eyebrow">Proposal received</p>
-        <h2>{{ submittedTitle }}</h2>
-        <p>Your event has been sent for review. It will appear on the events page after it is approved.</p>
+        <h2>Event submitted</h2>
+        <p><strong>{{ submittedTitle }}</strong> will appear on the events page after it is approved.</p>
         <div class="success-actions">
-          <UButton :to="`/events/${submittedEventId}/edit`" icon="i-lucide-pencil">
+          <UButton :to="`/events/${submittedEventId}/edit`">
             Edit proposal
           </UButton>
           <UButton
@@ -107,7 +103,7 @@ useSeoMeta({
             color="neutral"
             @click="submittedTitle = ''; submittedEventId = ''"
           >
-            Propose another
+            Submit another
           </UButton>
           <UButton to="/" variant="outline" color="neutral">Back to events</UButton>
         </div>
@@ -119,11 +115,9 @@ useSeoMeta({
             <h2>Event details</h2>
             <p>Submitting as {{ (user as any)?.name || (user as any)?.email || 'your Hack Club account' }}.</p>
           </div>
-          <span class="review-badge">Reviewed before publishing</span>
         </div>
 
         <div v-if="errorMessage" class="form-error" role="alert">
-          <UIcon name="i-lucide-circle-alert" />
           {{ errorMessage }}
         </div>
 
@@ -184,7 +178,6 @@ useSeoMeta({
                 :aria-pressed="tags.includes(tag)"
                 @click="toggleTag(tag)"
               >
-                <UIcon v-if="tags.includes(tag)" name="i-lucide-check" />
                 {{ tag.replaceAll('-', ' ').replace(/\b\w/g, letter => letter.toUpperCase()) }}
               </button>
             </div>
@@ -193,7 +186,7 @@ useSeoMeta({
 
         <div class="form-footer">
           <p>Proposals are reviewed by the events team before they go live.</p>
-          <UButton type="submit" size="lg" :loading="submitting" icon="i-lucide-send">
+          <UButton type="submit" size="lg" :loading="submitting">
             Submit event
           </UButton>
         </div>
@@ -210,9 +203,6 @@ useSeoMeta({
 }
 .hero-inner {
   max-width: var(--size-copy-plus);
-}
-.form-hero .eyebrow {
-  color: var(--primary);
 }
 .form-hero .title {
   margin: 0;
@@ -262,15 +252,6 @@ useSeoMeta({
 .login-gate p {
   margin: 0;
   color: var(--muted);
-}
-.review-badge {
-  flex: none;
-  padding: var(--spacing-1) var(--spacing-2);
-  border: 1px solid var(--green);
-  border-radius: var(--radii-small);
-  color: var(--steel);
-  font-size: var(--font-1);
-  font-weight: var(--font-weight-bold);
 }
 .form-error {
   display: flex;
@@ -391,25 +372,6 @@ useSeoMeta({
 .success-state p {
   max-width: var(--size-narrow);
   margin: 0 auto var(--spacing-3);
-}
-.gate-icon {
-  margin-bottom: var(--spacing-2);
-  color: var(--primary);
-  font-size: var(--font-6);
-}
-.success-icon {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  margin: 0 auto var(--spacing-3);
-  border-radius: 50%;
-  background: var(--green);
-  color: var(--dark);
-  font-size: var(--font-4);
-}
-.success-state .eyebrow {
-  color: var(--green-700);
 }
 .success-actions {
   display: flex;

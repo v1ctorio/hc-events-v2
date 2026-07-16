@@ -29,7 +29,6 @@ const { data: adminStatus } = await useFetch('/api/admin/status')
         v-if="loggedIn"
         to="/new"
         size="sm"
-        icon="i-lucide-plus"
         class="create-event"
       >
         Submit event

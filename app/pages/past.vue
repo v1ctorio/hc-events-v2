@@ -103,7 +103,7 @@ useSeoMeta({
           </select>
         </label>
 
-        <UButton type="submit" icon="i-lucide-search">Filter</UButton>
+        <UButton type="submit">Filter</UButton>
         <UButton
           v-if="year || month || tags"
           type="button"

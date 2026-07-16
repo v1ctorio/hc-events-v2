@@ -87,7 +87,6 @@ useSeoMeta({
 
     <template v-else>
       <header>
-        <p class="eyebrow">Event settings</p>
         <h1>Edit event</h1>
         <p class="caption">{{ event.Title }}</p>
       </header>
@@ -142,7 +141,6 @@ useSeoMeta({
               :aria-pressed="tags.includes(tag)"
               @click="toggleTag(tag)"
             >
-              <UIcon v-if="tags.includes(tag)" name="i-lucide-check" />
               {{ tag.replaceAll('-', ' ').replace(/\b\w/g, letter => letter.toUpperCase()) }}
             </button>
           </div>
@@ -174,9 +172,6 @@ header {
 }
 header h1 {
   margin: 0;
-}
-header .eyebrow {
-  color: var(--primary);
 }
 header p:last-child {
   margin: var(--spacing-1) 0 0;

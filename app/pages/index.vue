@@ -79,7 +79,7 @@ const navigateToPage = (p: number) => {
       </template>
 
       <div v-else class="empty">
-        <h2>🚧 More events coming soon.</h2>
+        <h2>More events coming soon.</h2>
       </div>
 
       <div class="history-link">
@@ -87,7 +87,6 @@ const navigateToPage = (p: number) => {
           to="/past"
           variant="outline"
           color="neutral"
-          icon="i-lucide-history"
         >
           View past events
         </UButton>

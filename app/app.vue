@@ -37,7 +37,7 @@ useSeoMeta({
     <footer class="site-footer">
       <div class="container footer-container">
         <p class="footer-text">
-          Built with ❤️ by <a href="https://hackclub.com">Hack Club</a>
+          Built by <a href="https://hackclub.com">Hack Club</a>
         </p>
         <div class="footer-links">
           <a

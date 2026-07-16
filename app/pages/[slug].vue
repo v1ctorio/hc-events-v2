@@ -110,7 +110,6 @@ useSeoMeta({
             v-if="!isPast"
             :to="event.googleCalendarLink"
             target="_blank"
-            icon="i-lucide-calendar"
             color="primary"
           >
             Add to Google Calendar
@@ -120,7 +119,6 @@ useSeoMeta({
             :to="`/events/${event.EventID}/edit`"
             variant="outline"
             color="neutral"
-            icon="i-lucide-pencil"
           >
             Edit event
           </UButton>
@@ -133,7 +131,6 @@ useSeoMeta({
               :loading="rsvpLoading"
               :color="hasRsvped ? 'neutral' : 'primary'"
               :variant="hasRsvped ? 'outline' : 'solid'"
-              :icon="hasRsvped ? 'i-lucide-check' : 'i-lucide-hand-metal'"
               size="lg"
               @click="toggleRsvp"
             >
@@ -142,7 +139,7 @@ useSeoMeta({
           </template>
           <template v-else>
             <a href="/auth/hackclub">
-              <UButton icon="i-lucide-log-in" color="primary" size="lg">
+              <UButton color="primary" size="lg">
                 Log in to RSVP
               </UButton>
             </a>
