@@ -11,7 +11,13 @@ export default defineEventHandler(async event => {
     }
 
     const user = await requireIdentity(event)
+    if (user.isApiKey && !data.leaderSlackId) {
+        throw createError({ statusCode: 400, statusMessage: "leaderSlackId is required for API-key submissions" })
+    }
     const scheduledStartTime = new Date(data.scheduledStartTime)
+    if (scheduledStartTime <= new Date()) {
+        throw createError({ statusCode: 400, statusMessage: "scheduledStartTime must be in the future" })
+    }
 
     const slug = [
         scheduledStartTime.getUTCFullYear(),
@@ -32,7 +38,7 @@ export default defineEventHandler(async event => {
         Title: data.title,
         Description: data.description,
         ScheduledStartTime: scheduledStartTime,
-        LeaderSlackId: data.leaderSlackId,
+        LeaderSlackId: user.isApiKey ? data.leaderSlackId! : user.slack_id,
         EventLink: data.eventLink,
         EstimatedDuration: data.estimatedDuration,
         Tags: data.tags,

@@ -12,7 +12,7 @@ export const NewEventFormSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
   scheduledStartTime: z.iso.datetime(),
-  leaderSlackId: z.string().min(1),
+  leaderSlackId: z.string().min(1).optional(),
   eventLink: z.url().optional().default("https://app.slack.com/huddle/T0266FRGM/C01D7AHKMPF"),
   estimatedDuration: z.number().int().positive().optional(), // minutes
   tags: z.array(z.enum(EVENT_TAGS)).optional().default([]),

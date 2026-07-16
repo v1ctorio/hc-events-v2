@@ -14,6 +14,15 @@ const { loggedIn, user, clear } = useUserSession()
     </NuxtLink>
 
     <div class="nav-right">
+      <UButton
+        v-if="loggedIn"
+        to="/new"
+        size="sm"
+        icon="i-lucide-plus"
+        class="create-event"
+      >
+        Create event
+      </UButton>
       <a
         href="https://github.com/hackclub/hc-events-v2"
         target="_blank"
@@ -82,6 +91,15 @@ nav {
   width: 28px;
   height: 28px;
   border-radius: 50%;
+}
+.create-event {
+  border-radius: var(--radii-default);
+  box-shadow: none;
+}
+@media (max-width: 32em) {
+  .create-event :deep(.truncate) {
+    display: none;
+  }
 }
 .icon-link {
   display: flex;
