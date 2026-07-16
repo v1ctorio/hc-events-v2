@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { EVENT_TAGS, type EventTag } from '#shared/event-tags'
+import type { APIEvent } from '#shared/types/events'
 
 const { loggedIn, user } = useUserSession()
 
@@ -12,6 +13,7 @@ const tags = ref<EventTag[]>([])
 const submitting = ref(false)
 const errorMessage = ref('')
 const submittedTitle = ref('')
+const submittedEventId = ref('')
 
 const minimumStartTime = computed(() => {
   const now = new Date(Date.now() + 5 * 60_000)
@@ -46,7 +48,7 @@ async function submitEvent() {
   errorMessage.value = ''
 
   try {
-    await $fetch('/api/events', {
+    const event = await $fetch<APIEvent>('/api/events', {
       method: 'POST',
       body: {
         title: title.value.trim(),
@@ -58,6 +60,7 @@ async function submitEvent() {
       },
     })
     submittedTitle.value = title.value.trim()
+    submittedEventId.value = event.EventID
     resetForm()
   } catch (error: any) {
     errorMessage.value = error?.data?.statusMessage || 'Your event could not be submitted. Please try again.'
@@ -96,7 +99,16 @@ useSeoMeta({
         <h2>{{ submittedTitle }}</h2>
         <p>Your event has been sent for review. It will appear on the events page after it is approved.</p>
         <div class="success-actions">
-          <UButton @click="submittedTitle = ''">Propose another</UButton>
+          <UButton :to="`/events/${submittedEventId}/edit`" icon="i-lucide-pencil">
+            Edit proposal
+          </UButton>
+          <UButton
+            variant="outline"
+            color="neutral"
+            @click="submittedTitle = ''; submittedEventId = ''"
+          >
+            Propose another
+          </UButton>
           <UButton to="/" variant="outline" color="neutral">Back to events</UButton>
         </div>
       </section>

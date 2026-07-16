@@ -21,3 +21,12 @@ export const NewEventFormSchema = z.object({
 export const AdminEventActionSchema = z.object({
   action: z.enum(['approve', 'reject', 'cancel', 'restore']),
 })
+
+export const EditEventSchema = z.object({
+  title: z.string().trim().min(1).max(120).optional(),
+  description: z.string().trim().max(4000).optional(),
+  scheduledStartTime: z.iso.datetime().optional(),
+  eventLink: z.url().optional(),
+  estimatedDuration: z.number().int().positive().optional(),
+  tags: z.array(z.enum(EVENT_TAGS)).optional(),
+}).refine(body => Object.keys(body).length > 0, 'At least one field is required')

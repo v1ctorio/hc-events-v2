@@ -84,6 +84,15 @@ useSeoMeta({
         </div>
 
         <div class="actions">
+          <UButton
+            :to="`/events/${event.EventID}/edit`"
+            size="sm"
+            variant="outline"
+            color="neutral"
+          >
+            Edit
+          </UButton>
+
           <template v-if="!event.Approved && !event.Cancelled">
             <UButton
               size="sm"

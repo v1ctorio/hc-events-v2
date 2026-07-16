@@ -11,8 +11,12 @@ if (!event.value && status.value !== 'pending') {
 }
 
 const { loggedIn, user } = useUserSession()
+const { data: adminStatus } = await useFetch('/api/admin/status')
 
 const leaderSlackId = computed(() => event.value?.LeaderSlackId ?? null)
+const canEdit = computed(() => loggedIn.value && (
+  (user.value as any)?.slack_id === leaderSlackId.value || adminStatus.value?.isAdmin
+))
 const { displayName: leaderName, avatarUrl: leaderAvatar } = useCachetUser(leaderSlackId.value)
 
 const startDate = computed(() => event.value ? new Date(event.value.ScheduledStartTime) : new Date())
@@ -101,14 +105,24 @@ useSeoMeta({
         </div>
 
         <!-- Calendar buttons -->
-        <div v-if="!isPast" class="action-buttons">
+        <div v-if="!isPast || canEdit" class="action-buttons">
           <UButton
+            v-if="!isPast"
             :to="event.googleCalendarLink"
             target="_blank"
             icon="i-lucide-calendar"
             color="primary"
           >
             Add to Google Calendar
+          </UButton>
+          <UButton
+            v-if="canEdit"
+            :to="`/events/${event.EventID}/edit`"
+            variant="outline"
+            color="neutral"
+            icon="i-lucide-pencil"
+          >
+            Edit event
           </UButton>
         </div>
 
